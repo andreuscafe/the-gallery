@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles.scss";
+import {
+  AnimateSharedLayout,
+  motion,
+  useTransform,
+  useViewportScroll
+} from "framer-motion";
+import { Fade } from "react-awesome-reveal";
 
-function App() {
+import Gallery from "./components/Gallery";
+
+export default function App() {
+  const { scrollYProgress } = useViewportScroll();
+  const titleY = useTransform(scrollYProgress, [0, 0.6], [0, 250]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimateSharedLayout>
+      <div className="App">
+        <main className="contentWrapper">
+          <section className="hero">
+            <motion.h1
+              style={{ y: titleY, opacity: titleOpacity }}
+              className="title"
+            >
+              <Fade cascade duration={300} triggerOnce>
+                The
+              </Fade>
+              <Fade cascade delay={600} duration={300} triggerOnce>
+                Gallery
+              </Fade>
+            </motion.h1>
+          </section>
+
+          <Gallery />
+        </main>
+      </div>
+    </AnimateSharedLayout>
   );
 }
-
-export default App;
